@@ -16,4 +16,11 @@ public class ObjectUtilTest {
         Assert.assertTrue(ObjectUtil.isNotNull(new Object()));
         Assert.assertFalse(ObjectUtil.isNotNull(null));
     }
+
+    @Test
+    public void defaultIfNull() {
+        Assert.assertNotNull(ObjectUtil.defaultIfNull(null, new Object()));
+        Assert.assertNotNull(ObjectUtil.defaultIfNull(new Object(), null));
+        Assert.assertNull(ObjectUtil.defaultIfNull(null, null));
+    }
 }
