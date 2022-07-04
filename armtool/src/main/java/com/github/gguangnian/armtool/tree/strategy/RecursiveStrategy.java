@@ -1,55 +1,46 @@
 package com.github.gguangnian.armtool.tree.strategy;
 
 import com.github.gguangnian.armtool.tree.Tree;
-import com.github.gguangnian.armtool.util.ObjectUtil;
+import com.github.gguangnian.armtool.tree.TreeNodeConfig;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * 利用递归组装树结构
  *
+ * @param <T> ID类型
  * @author gcz
  * @Date 2022/6/24
  */
-public class RecursiveStrategy implements TreeStrategy {
+public class RecursiveStrategy<T> implements TreeBuildStrategy<T> {
 
-    @Override
-    public <T> List<Tree<T>> build(List<Tree<T>> treeList, T rootId, int maxDeep) {
-        maxDeep = maxDeep == 0 ? Integer.MAX_VALUE : maxDeep;
-        int deep = 0;
-        List<Tree<T>> topNodeList = new ArrayList<>();
-        for (Tree<T> node : treeList) {
-            if (rootId.equals(node.getParentId())) {
-                topNodeList.add(node);
-                deep++;
-                this.innerBuild(treeList, node, deep, maxDeep);
-                deep--;
-            }
-        }
-        //顶部列表排序
-        Collections.sort(topNodeList);
-        return topNodeList;
+    private final TreeNodeConfig config;
+
+    public RecursiveStrategy(TreeNodeConfig config) {
+        this.config = config;
     }
 
-    private <T> void innerBuild(List<Tree<T>> treeList, Tree<T> parentNode, int deep, int maxDeep) {
-        if (deep >= maxDeep) {
-            return;
+    @Override
+    public <T> List<Tree<T>> build(List<Tree<T>> trees, T rootId) {
+        List<Tree<T>> parentTree = new ArrayList();
+        for (Tree<T> tree : trees
+        ) {
+            if (tree.getId().equals(rootId)) {
+                parentTree.add(tree);
+                this.innerBuild(trees, tree);
+            }
         }
-        for (Tree<T> node : treeList) {
-            if (parentNode.getId().equals(node.getParentId())) {
-                List<Tree<T>> children = parentNode.getChildren();
-                if (ObjectUtil.isNull(children)) {
-                    children = new ArrayList<>();
-                    parentNode.setChildren(children);
-                }
-                node.setParent(parentNode);
-                children.add(node);
-                Collections.sort(children);
-                deep++;
-                this.innerBuild(treeList, node, deep, maxDeep);
-                deep--;
+        return parentTree;
+    }
+
+    private <T> void innerBuild(List<Tree<T>> trees, Tree<T> parentTree) {
+        for (Tree<T> tree : trees
+        ) {
+            if (parentTree.getId().equals(tree.getId())) {
+                tree.setParent(parentTree);
+                parentTree.addChildren(tree);
+                this.innerBuild(trees, tree);
             }
         }
     }

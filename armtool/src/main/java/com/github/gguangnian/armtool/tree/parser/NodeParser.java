@@ -16,7 +16,7 @@ public interface NodeParser<T, E> {
      * 源数据实体 转换为Tree
      *
      * @param persistent 源数据实体
-     * @param treeNode   树节点实体
+     * @param tree   树节点实体
      */
-    void parse(T persistent, Tree<E> treeNode);
+    void parse(T persistent, Tree<E> tree);
 }

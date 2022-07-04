@@ -1,11 +1,8 @@
 package com.github.gguangnian.armtool.tree;
 
-import com.github.gguangnian.armtool.test.Assert;
 import com.github.gguangnian.armtool.tree.strategy.RecursiveStrategy;
-import com.github.gguangnian.armtool.tree.strategy.TreeStrategy;
-import com.github.gguangnian.armtool.util.ObjectUtil;
+import com.github.gguangnian.armtool.tree.strategy.TreeBuildStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,16 +18,33 @@ class TreeBuild<T> {
 
     private final TreeNodeConfig treeNodeConfig;
 
-    private static final List<TreeStrategy> defaultStrategy;
-
-    static {
-        defaultStrategy = new ArrayList<>(1);
-        defaultStrategy.add(new RecursiveStrategy());
-    }
 
     TreeBuild(T rootId, TreeNodeConfig treeNodeConfig) {
-        Assert.isNotNull(rootId);
         this.rootId = rootId;
-        this.treeNodeConfig = ObjectUtil.defaultIfNull(treeNodeConfig, TreeNodeConfig.DEFAULT_CONFIG);
+        this.treeNodeConfig = treeNodeConfig;
+    }
+
+    /**
+     * 根据递归构建策略构建 树
+     *
+     * @param treeList
+     * @param rootId
+     * @param strategy
+     * @return
+     */
+    List<Tree<T>> recursiveBuilder(List<Tree<T>> treeList, T rootId, TreeBuildStrategy strategy) {
+        return this.buildByStrategy(treeList, rootId, new RecursiveStrategy(treeNodeConfig));
+    }
+
+    /**
+     * 根据构建策略构建 树
+     *
+     * @param treeList
+     * @param rootId
+     * @param strategy
+     * @return
+     */
+    List<Tree<T>> buildByStrategy(List<Tree<T>> treeList, T rootId, TreeBuildStrategy strategy) {
+        return strategy.build(treeList, rootId);
     }
 }

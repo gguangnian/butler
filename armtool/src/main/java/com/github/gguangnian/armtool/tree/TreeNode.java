@@ -1,7 +1,5 @@
 package com.github.gguangnian.armtool.tree;
 
-import com.github.gguangnian.armtool.util.HashUtil;
-
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;

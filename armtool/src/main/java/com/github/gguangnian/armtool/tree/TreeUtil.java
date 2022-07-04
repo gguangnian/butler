@@ -1,7 +1,12 @@
 package com.github.gguangnian.armtool.tree;
 
+import com.github.gguangnian.armtool.test.Assert;
+import com.github.gguangnian.armtool.tree.parser.DefaultNodeParser;
 import com.github.gguangnian.armtool.tree.parser.NodeParser;
+import com.github.gguangnian.armtool.util.CollUtil;
+import com.github.gguangnian.armtool.util.ObjectUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +28,12 @@ public class TreeUtil {
      * @return List
      */
     public static <T, E> List<Tree<E>> build(List<T> list, E rootId, TreeNodeConfig treeNodeConfig, NodeParser<T, E> nodeParser) {
+        if (CollUtil.isEmpty(list)) {
+            return new ArrayList<Tree<E>>(0);
+        }
+        Assert.isNotNull(rootId);
+
+
         return null;
     }
 }

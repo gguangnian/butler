@@ -125,7 +125,7 @@ public class Tree<T> implements Map<String, Object>, Comparable<Tree<T>>, Serial
     /**
      * 获取所有子节点
      *
-     * @return 所有子节点
+     * @return 所有子节点，可能为null
      */
     public List<Tree<T>> getChildren() {
         return (List<Tree<T>>) this.get(treeNodeConfig.getChildrenKey());
@@ -143,6 +143,21 @@ public class Tree<T> implements Map<String, Object>, Comparable<Tree<T>>, Serial
     }
 
     /**
+     * 添加字节点
+     *
+     * @param childrenTree {@link Tree}
+     * @return
+     */
+    public Tree<T> addChildren(Tree<T> childrenTree) {
+        List<Tree<T>> children = null;
+        if (ObjectUtil.isNull(this.get(treeNodeConfig.getChildrenKey()))) {
+            data.put(treeNodeConfig.getChildrenKey(), new ArrayList());
+        }
+        this.getChildren().add(childrenTree);
+        return this;
+    }
+
+    /**
      * 扩展属性
      *
      * @param key   键
@@ -154,6 +169,7 @@ public class Tree<T> implements Map<String, Object>, Comparable<Tree<T>>, Serial
 
 
     @Override
+    @SuppressWarnings("rawtypes")
     public int compareTo(Tree<T> o) {
         Comparable weight = this.getWeight();
         if (ObjectUtil.isNotNull(weight)) {
@@ -163,6 +179,7 @@ public class Tree<T> implements Map<String, Object>, Comparable<Tree<T>>, Serial
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public boolean equals(Object obj) {
         if (obj instanceof Tree) {
             return Objects.equals(this.getId(), ((Tree) obj).getId());
