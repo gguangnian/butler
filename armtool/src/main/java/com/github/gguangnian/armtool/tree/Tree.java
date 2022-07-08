@@ -16,12 +16,12 @@ import java.util.*;
 public class Tree<T> implements Map<String, Object>, Comparable<Tree<T>>, Serializable {
     private final Map<String, Object> data;
 
-    private final TreeNodeConfig treeNodeConfig;
+    private final transient TreeNodeConfig treeNodeConfig;
 
     /**
      * 父节点
      */
-    private Tree<T> parent;
+    private transient Tree<T> parent;
 
     public Tree() {
         this(null);

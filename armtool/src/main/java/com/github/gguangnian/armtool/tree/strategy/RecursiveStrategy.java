@@ -5,6 +5,7 @@ import com.github.gguangnian.armtool.tree.TreeNodeConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 利用递归组装树结构
@@ -23,10 +24,11 @@ public class RecursiveStrategy<T> implements TreeBuildStrategy<T> {
 
     @Override
     public <T> List<Tree<T>> build(List<Tree<T>> trees, T rootId) {
+        trees = trees.stream().sorted().collect(Collectors.toList());
         List<Tree<T>> parentTree = new ArrayList();
         for (Tree<T> tree : trees
         ) {
-            if (tree.getId().equals(rootId)) {
+            if (tree.getParentId().equals(rootId)) {
                 parentTree.add(tree);
                 this.innerBuild(trees, tree);
             }
@@ -37,7 +39,7 @@ public class RecursiveStrategy<T> implements TreeBuildStrategy<T> {
     private <T> void innerBuild(List<Tree<T>> trees, Tree<T> parentTree) {
         for (Tree<T> tree : trees
         ) {
-            if (parentTree.getId().equals(tree.getId())) {
+            if (parentTree.getId().equals(tree.getParentId())) {
                 tree.setParent(parentTree);
                 parentTree.addChildren(tree);
                 this.innerBuild(trees, tree);
