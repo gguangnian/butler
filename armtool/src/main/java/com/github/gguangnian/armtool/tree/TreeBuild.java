@@ -2,6 +2,7 @@ package com.github.gguangnian.armtool.tree;
 
 import com.github.gguangnian.armtool.tree.strategy.RecursiveStrategy;
 import com.github.gguangnian.armtool.tree.strategy.TreeBuildStrategy;
+import com.github.gguangnian.armtool.util.ObjectUtil;
 
 import java.util.List;
 
@@ -21,18 +22,16 @@ class TreeBuild<T> {
 
     TreeBuild(T rootId, TreeNodeConfig treeNodeConfig) {
         this.rootId = rootId;
-        this.treeNodeConfig = treeNodeConfig;
+        this.treeNodeConfig = ObjectUtil.defaultIfNull(treeNodeConfig, TreeNodeConfig.DEFAULT_CONFIG);
     }
 
     /**
      * 根据递归构建策略构建 树
      *
      * @param treeList
-     * @param rootId
-     * @param strategy
      * @return
      */
-    List<Tree<T>> recursiveBuilder(List<Tree<T>> treeList, T rootId, TreeBuildStrategy strategy) {
+    List<Tree<T>> recursiveBuilder(List<Tree<T>> treeList) {
         return this.buildByStrategy(treeList, rootId, new RecursiveStrategy(treeNodeConfig));
     }
 

@@ -1,10 +1,8 @@
 package com.github.gguangnian.armtool.tree;
 
 import com.github.gguangnian.armtool.test.Assert;
-import com.github.gguangnian.armtool.tree.parser.DefaultNodeParser;
 import com.github.gguangnian.armtool.tree.parser.NodeParser;
 import com.github.gguangnian.armtool.util.CollUtil;
-import com.github.gguangnian.armtool.util.ObjectUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,13 @@ public class TreeUtil {
         }
         Assert.isNotNull(rootId);
 
-
-        return null;
+        List<Tree<E>> treeList = new ArrayList<>(list.size());
+        for (T obj : list
+        ) {
+            Tree<E> tree = new Tree<>(treeNodeConfig);
+            nodeParser.parse(obj, tree);
+            treeList.add(tree);
+        }
+        return new TreeBuild<E>(rootId, treeNodeConfig).recursiveBuilder(treeList);
     }
 }
